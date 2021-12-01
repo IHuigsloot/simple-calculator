@@ -19,13 +19,10 @@ public class Calculation {
     @GeneratedValue
     private long id;
 
-    @NotBlank
     private Integer numberA;
 
-    @NotBlank
     private Integer numberB;
 
-    @NotBlank
     private String operator;
 
     private Double answer;

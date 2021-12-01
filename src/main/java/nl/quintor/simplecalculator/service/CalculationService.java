@@ -5,6 +5,8 @@ import nl.quintor.simplecalculator.model.Calculation;
 import nl.quintor.simplecalculator.repository.CalculationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CalculationService {
 
@@ -16,7 +18,7 @@ public class CalculationService {
         this.calculationRepository = calculationRepository;
     }
 
-    public Double calculate(Calculation calculation) {
+    public Calculation calculate(Calculation calculation) {
         switch (calculation.getOperator()) {
             case "+":
                 calculation.setAnswer(simpleCalculator.add(calculation.getNumberA(), calculation.getNumberB()));
@@ -35,6 +37,10 @@ public class CalculationService {
         }
 
         calculationRepository.save(calculation);
-        return calculation.getAnswer();
+        return calculation;
+    }
+
+    public List<Calculation> getHistory() {
+        return calculationRepository.findAll();
     }
 }

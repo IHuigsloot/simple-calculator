@@ -8,6 +8,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -29,9 +33,9 @@ class CalculationServiceTest {
 
         when(calculationRepository.save(calculation)).thenReturn(calculation);
 
-        Double answer = calculationService.calculate(calculation);
+        Calculation answer = calculationService.calculate(calculation);
 
-        assertEquals(answer, calculation.getAnswer());
+        assertEquals(answer.getAnswer(), calculation.getAnswer());
         verify(calculationRepository, times(1)).save(calculation);
     }
 
@@ -44,9 +48,9 @@ class CalculationServiceTest {
 
         when(calculationRepository.save(calculation)).thenReturn(calculation);
 
-        Double answer = calculationService.calculate(calculation);
+        Calculation answer = calculationService.calculate(calculation);
 
-        assertEquals(answer, calculation.getAnswer());
+        assertEquals(answer.getAnswer(), calculation.getAnswer());
         verify(calculationRepository, times(1)).save(calculation);
     }
 
@@ -59,9 +63,9 @@ class CalculationServiceTest {
 
         when(calculationRepository.save(calculation)).thenReturn(calculation);
 
-        Double answer = calculationService.calculate(calculation);
+        Calculation answer = calculationService.calculate(calculation);
 
-        assertEquals(answer, calculation.getAnswer());
+        assertEquals(answer.getAnswer(), calculation.getAnswer());
         verify(calculationRepository, times(1)).save(calculation);
     }
 
@@ -74,9 +78,29 @@ class CalculationServiceTest {
 
         when(calculationRepository.save(calculation)).thenReturn(calculation);
 
-        Double answer = calculationService.calculate(calculation);
+        Calculation answer = calculationService.calculate(calculation);
 
-        assertEquals(answer, calculation.getAnswer());
+        assertEquals(answer.getAnswer(), calculation.getAnswer());
         verify(calculationRepository, times(1)).save(calculation);
     }
+
+    @Test
+    public void canRetrieveHistory() {
+        List<Calculation> historyMock = new ArrayList<>();
+        Calculation calculation = new Calculation();
+        calculation.setId(1L);
+        calculation.setNumberA(4);
+        calculation.setNumberB(8);
+        calculation.setOperator("+");
+        calculation.setAnswer(12.0);
+
+        historyMock.add(calculation);
+        when(calculationRepository.findAll()).thenReturn(Collections.singletonList(calculation));
+
+        List<Calculation> history = calculationService.getHistory();
+
+        verify(calculationRepository, times(1)).findAll();
+        assertEquals(history, historyMock);
+    }
+
 }
