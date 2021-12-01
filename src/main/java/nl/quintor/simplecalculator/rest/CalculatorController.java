@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class CalculatorController {
 
     private final SimpleCalculator simpleCalculator = new SimpleCalculator();
 
     @PostMapping()
-    public ResponseEntity<Double> makeCalculation(@RequestBody CalculationDto calculation) {
+    public ResponseEntity<Double> makeCalculation(@RequestBody @Valid CalculationDto calculation) {
         double result;
 
         switch (calculation.getOperator()) {
