@@ -17,3 +17,7 @@ Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/
 ```shell
 mvn spring-boot:run
 ```
+
+## Note on database
+The application currently auto generates tables and entities.
+For further development, version control like Liquibase is recommended.
