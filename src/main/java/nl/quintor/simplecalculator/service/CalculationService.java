@@ -1,6 +1,7 @@
 package nl.quintor.simplecalculator.service;
 
 import nl.quintor.simplecalculator.SimpleCalculator;
+import nl.quintor.simplecalculator.exception.InvalidOperationException;
 import nl.quintor.simplecalculator.model.Calculation;
 import nl.quintor.simplecalculator.repository.CalculationRepository;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class CalculationService {
                 calculation.setAnswer(simpleCalculator.divide(calculation.getNumberA(), calculation.getNumberB()));
                 break;
             default:
-                calculation.setAnswer(1.0);
+                throw new InvalidOperationException();
         }
 
         calculationRepository.save(calculation);

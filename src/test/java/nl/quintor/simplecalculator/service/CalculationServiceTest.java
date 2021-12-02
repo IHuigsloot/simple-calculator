@@ -1,5 +1,6 @@
 package nl.quintor.simplecalculator.service;
 
+import nl.quintor.simplecalculator.exception.InvalidOperationException;
 import nl.quintor.simplecalculator.model.Calculation;
 import nl.quintor.simplecalculator.repository.CalculationRepository;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,6 +69,18 @@ class CalculationServiceTest {
 
         assertEquals(answer.getAnswer(), calculation.getAnswer());
         verify(calculationRepository, times(1)).save(calculation);
+    }
+
+    @Test
+    public void throwsExceptionOnInvalidOperator() {
+        Calculation calculation = new Calculation();
+        calculation.setNumberA(5);
+        calculation.setNumberB(3);
+        calculation.setOperator("x");
+
+        assertThrows(InvalidOperationException.class, () -> {
+            calculationService.calculate(calculation);
+        });
     }
 
     @Test

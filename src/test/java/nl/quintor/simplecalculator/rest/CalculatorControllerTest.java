@@ -1,6 +1,7 @@
 package nl.quintor.simplecalculator.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.quintor.simplecalculator.exception.InvalidOperationException;
 import nl.quintor.simplecalculator.model.Calculation;
 import nl.quintor.simplecalculator.rest.dto.CalculationDto;
 import nl.quintor.simplecalculator.service.CalculationService;
@@ -76,5 +77,21 @@ class CalculatorControllerTest {
         this.mockMvc.perform(get("/history"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].answer").value(8.0));
+    }
+
+    @Test
+    public void throwsBadRequestOnInvalidOperator() throws Exception {
+        CalculationDto dto = new CalculationDto();
+        dto.setNumberA(5);
+        dto.setNumberB(3);
+        dto.setOperator("+");
+
+        when(calculationService.calculate(any())).thenThrow(InvalidOperationException.class);
+
+        this.mockMvc.perform(post("/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
+//                .andExpect(jsonPath("$.answer").value(8.0));
     }
 }
